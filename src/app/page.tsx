@@ -6,7 +6,7 @@ export default async function Home() {
   let data = [];
   data = await actions.getData();
   return (
-    <section className=" w-screen py-20 flex justify-center flex-col items-center">
+    <section className="w-screen py-20 flex justify-center flex-col items-center">
       <h1 className="text-5xl font-extrabold uppercase mb-5 text-center">
         Task Management Boards
       </h1>
@@ -15,8 +15,8 @@ export default async function Home() {
         <AddTodo />
 
         <ul className="flex flex-col gap-5 items-center justify-center mt-10 w-screen">
-          {data.map((todo, id) => (
-            <li className="w-full" key={id}>
+          {data.map((todo) => (
+            <li className="w-full" key={todo.id}>
               <Todo todo={todo} />
             </li>
           ))}

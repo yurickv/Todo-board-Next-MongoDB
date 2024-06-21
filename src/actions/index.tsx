@@ -18,6 +18,23 @@ export async function createTodo(formData: FormData) {
   revalidatePath("/");
 }
 
+export async function createTask(formData: FormData) {
+  const title = formData.get("inputTitle") as string;
+  const description = formData.get("inputDescription") as string;
+  if (!title.trim() || !description.trim()) {
+    return;
+  }
+  const id = formData.get("inputId") as string;
+  await prisma.todoItem.create({
+    data: {
+      title: title,
+      description: description,
+      applyBoard: id,
+    },
+  });
+
+  revalidatePath(`/${id}`);
+}
 // export async function changeStatus(formData: FormData) {
 //   const inputId = formData.get("inputId") as string;
 //   const todo = await prisma.todoBoard.findUnique({

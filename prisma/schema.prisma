@@ -15,7 +15,7 @@ datasource db {
 model TodoBoard {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
   title String
-  posts TodoItem[]
+  tasks TodoItem[]
 }
 
 model TodoItem {
