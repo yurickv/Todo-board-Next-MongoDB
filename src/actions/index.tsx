@@ -60,6 +60,21 @@ export async function getAllTasks(id: string) {
     throw new Error("Failed to fetch tasks");
   }
 }
+export async function deleteTask(formData: FormData) {
+  const inputId = formData.get("inputId") as string;
+
+  try {
+    const data = await prisma.todoItem.delete({
+      where: {
+        id: inputId,
+      },
+    });
+    revalidatePath(`/${data.applyBoard}`);
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+    throw new Error("Failed to delete todo");
+  }
+}
 // export async function changeStatus(formData: FormData) {
 //   const inputId = formData.get("inputId") as string;
 //   const todo = await prisma.todoBoard.findUnique({

@@ -1,4 +1,5 @@
 import { taskProps } from "@/types";
+import DeleteTask from "./DeleteTask";
 
 // import Link from "next/link";
 
@@ -10,11 +11,11 @@ const TaskCard = ({ task }: { task: taskProps }) => {
 
       {/* <div className="flex items-center mx-2">
         <EditTodo todo={todo} />
-      </div>
+      </div> */}
 
       <div className="flex items-center ">
-        <DeleteTodo todo={todo} />
-      </div> */}
+        <DeleteTask task={task} />
+      </div>
     </div>
   );
 };
