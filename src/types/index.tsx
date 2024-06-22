@@ -26,3 +26,10 @@ export interface todoProps {
   id: string;
   title?: string | null;
 }
+export interface taskProps {
+  id: string;
+  title?: string | null;
+  description: string;
+  applyBoard: string;
+  status: string;
+}

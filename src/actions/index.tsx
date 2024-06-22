@@ -9,13 +9,18 @@ export async function createTodo(formData: FormData) {
     return;
   }
 
-  await prisma.todoBoard.create({
-    data: {
-      title: input,
-    },
-  });
+  try {
+    await prisma.todoBoard.create({
+      data: {
+        title: input,
+      },
+    });
 
-  revalidatePath("/");
+    revalidatePath("/");
+  } catch (error) {
+    console.error("Error creating todo:", error);
+    throw new Error("Failed to create todo");
+  }
 }
 
 export async function createTask(formData: FormData) {
@@ -25,15 +30,35 @@ export async function createTask(formData: FormData) {
     return;
   }
   const id = formData.get("inputId") as string;
-  await prisma.todoItem.create({
-    data: {
-      title: title,
-      description: description,
-      applyBoard: id,
-    },
-  });
 
-  revalidatePath(`/${id}`);
+  try {
+    await prisma.todoItem.create({
+      data: {
+        title: title,
+        description: description,
+        applyBoard: id,
+      },
+    });
+
+    revalidatePath(`/${id}`);
+  } catch (error) {
+    console.error("Error creating task:", error);
+    throw new Error("Failed to create task");
+  }
+}
+
+export async function getAllTasks(id: string) {
+  try {
+    const data = await prisma.todoItem.findMany({
+      where: {
+        applyBoard: id,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    throw new Error("Failed to fetch tasks");
+  }
 }
 // export async function changeStatus(formData: FormData) {
 //   const inputId = formData.get("inputId") as string;
@@ -61,58 +86,71 @@ export async function editTodo(formData: FormData) {
   const newTitle = formData.get("newTitle") as string;
   const inputId = formData.get("inputId") as string;
 
-  await prisma.todoBoard.update({
-    where: {
-      id: inputId,
-    },
-    data: {
-      title: newTitle,
-    },
-  });
+  try {
+    await prisma.todoBoard.update({
+      where: {
+        id: inputId,
+      },
+      data: {
+        title: newTitle,
+      },
+    });
 
-  revalidatePath("/");
+    revalidatePath("/");
+  } catch (error) {
+    console.error("Error updating todo:", error);
+    throw new Error("Failed to update todo");
+  }
 }
 
 export async function deleteTodo(formData: FormData) {
   const inputId = formData.get("inputId") as string;
 
-  await prisma.todoBoard.delete({
-    where: {
-      id: inputId,
-    },
-  });
+  try {
+    await prisma.todoBoard.delete({
+      where: {
+        id: inputId,
+      },
+    });
 
-  revalidatePath("/");
-}
-
-export async function searchTodo(formData: FormData) {
-  const searcingTitle = formData.get("searchTitle") as string;
-
-  await prisma.todoBoard.findMany({
-    where: {
-      title: searcingTitle,
-    },
-    select: {
-      title: true,
-      id: true,
-    },
-  });
-
-  revalidatePath("/");
+    revalidatePath("/");
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+    throw new Error("Failed to delete todo");
+  }
 }
 
 export async function getData(searchTitle = "") {
-  const data = await prisma.todoBoard.findMany({
-    where: {
-      title: {
-        contains: searchTitle,
+  try {
+    const data = await prisma.todoBoard.findMany({
+      where: {
+        title: {
+          contains: searchTitle,
+        },
       },
-    },
-    select: {
-      title: true,
-      id: true,
-    },
-  });
+      select: {
+        title: true,
+        id: true,
+      },
+    });
 
-  return data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw new Error("Failed to fetch data");
+  }
+}
+
+export async function getOneTodo(id: string) {
+  try {
+    const data = prisma.todoBoard.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error("Error fetching Todo Board:", error);
+    throw new Error("Failed to fetch Todo Board");
+  }
 }

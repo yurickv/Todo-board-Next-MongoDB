@@ -1,10 +1,9 @@
 import * as actions from "@/actions";
 import AddTodo from "@/components/todos/AddTodo";
-import Todo from "@/components/todos/Todo";
+import Todo from "@/components/todos/TodoCard";
 
 export default async function Home() {
-  let data = [];
-  data = await actions.getData();
+  const data = await actions.getData();
   return (
     <section className="w-screen py-20 flex justify-center flex-col items-center">
       <h1 className="text-5xl font-extrabold uppercase mb-5 text-center">
