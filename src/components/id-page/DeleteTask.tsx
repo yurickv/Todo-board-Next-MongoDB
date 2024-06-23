@@ -10,12 +10,7 @@ const DeleteTask = ({ task }: { task: taskProps }) => {
   return (
     <Form action={actions.deleteTask}>
       <Input type="hidden" name="inputId" value={task.id}></Input>
-      <Button
-        actionButton
-        type="submit"
-        bgColor="bg-red-400"
-        text={<FaTrash />}
-      ></Button>
+      <Button type="submit" bgColor="text-red-400" text="Delete"></Button>
     </Form>
   );
 };

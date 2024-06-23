@@ -4,7 +4,7 @@ export interface inputProps {
   name: string;
   type: string;
   placeholder?: string;
-  value?: string;
+  value?: string | undefined;
 }
 
 export interface formProps {
@@ -32,4 +32,10 @@ export interface taskProps {
   description: string;
   applyBoard: string;
   status: string;
+}
+
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
 }

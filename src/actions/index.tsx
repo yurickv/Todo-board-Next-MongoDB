@@ -75,6 +75,28 @@ export async function deleteTask(formData: FormData) {
     throw new Error("Failed to delete todo");
   }
 }
+export async function editTask(formData: FormData) {
+  const newTitle = formData.get("newTitle") as string;
+  const newDescription = formData.get("newDescription") as string;
+  const inputId = formData.get("inputId") as string;
+
+  try {
+    const data = await prisma.todoItem.update({
+      where: {
+        id: inputId,
+      },
+      data: {
+        title: newTitle,
+        description: newDescription,
+      },
+    });
+
+    revalidatePath(`/${data.applyBoard}`);
+  } catch (error) {
+    console.error("Error updating todo:", error);
+    throw new Error("Failed to update todo");
+  }
+}
 // export async function changeStatus(formData: FormData) {
 //   const inputId = formData.get("inputId") as string;
 //   const todo = await prisma.todoBoard.findUnique({
