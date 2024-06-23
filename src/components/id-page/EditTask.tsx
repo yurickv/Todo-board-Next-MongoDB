@@ -24,8 +24,12 @@ const EditTask = ({ task }: { task: taskProps }) => {
   };
 
   return (
-    <div className="flex gap-5 items-center">
-      <Button onClick={handleEdit} text="Edit" bgColor="text-slate-900" />
+    <div className="">
+      <Button
+        onClick={handleEdit}
+        text="Edit"
+        bgColor="text-slate-900 hover:bg-slate-100 w-full text-left text-[15px]"
+      />
       <Modal isOpen={isModalOpen} onClose={handleClose}>
         <Form action={actions.editTask} onSubmit={handleSubmit}>
           <Input name="inputId" value={task.id} type="hidden" />
@@ -35,14 +39,20 @@ const EditTask = ({ task }: { task: taskProps }) => {
               type="text"
               name="newTitle"
               placeholder="Edit Task Title..."
+              maxLength={20}
             />
             <p className="mb-2 mt-6">New description</p>
             <Input
               type="text"
               name="newDescription"
               placeholder="Edit Task Description..."
+              maxLength={100}
             />
-            <Button type="submit" text="Save" bgColor="bg-blue-600 mt-4" />
+            <Button
+              type="submit"
+              text="Save"
+              bgColor="bg-blue-600 hover:bg-blue-500 mt-4 text-gray-50"
+            />
           </div>
         </Form>
       </Modal>

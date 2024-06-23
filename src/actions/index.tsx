@@ -97,6 +97,23 @@ export async function editTask(formData: FormData) {
     throw new Error("Failed to update todo");
   }
 }
+
+export async function updateTaskStatus(id: string, newStatus: string) {
+  try {
+    await prisma.todoItem.update({
+      where: {
+        id: id,
+      },
+      data: {
+        status: newStatus,
+      },
+    });
+
+    revalidatePath(`/${id}`);
+  } catch (error) {
+    console.error("Failed to update task status", error);
+  }
+}
 // export async function changeStatus(formData: FormData) {
 //   const inputId = formData.get("inputId") as string;
 //   const todo = await prisma.todoBoard.findUnique({

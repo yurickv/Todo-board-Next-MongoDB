@@ -12,8 +12,13 @@ const AddTodo = () => {
             name="input"
             type="text"
             placeholder="Add Todo_Board Here..."
+            maxLength={20}
           />
-          <Button type="submit" text="Add" bgColor="bg-blue-600" />
+          <Button
+            type="submit"
+            text="Add"
+            bgColor="bg-blue-600 hover:bg-blue-500"
+          />
         </div>
       </Form>
     </div>

@@ -7,6 +7,7 @@ import Button from "../button/Button";
 import { useState } from "react";
 import { todoProps } from "@/types";
 import { MdEdit } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
 
 const EditTodo = ({ todo }: { todo: todoProps }) => {
   const [editTodoState, setEditTodoState] = useState(false);
@@ -21,17 +22,27 @@ const EditTodo = ({ todo }: { todo: todoProps }) => {
 
   return (
     <div className="flex gap-5 items-center">
-      <Button onClick={handleEdit} text={<MdEdit />} actionButton />
+      <Button
+        onClick={handleEdit}
+        text={editTodoState ? <IoClose /> : <MdEdit />}
+        bgColor="bg-slate-800 hover:bg-slate-700"
+        actionButton
+      />
       {editTodoState ? (
         <Form action={actions.editTodo} onSubmit={handleSubmit}>
           <Input name="inputId" value={todo.id} type="hidden"></Input>
-          <div className="flex justify-center ">
+          <div className="flex justify-center items-center gap-1">
             <Input
               type="text"
               name="newTitle"
               placeholder="Edit Todo Title..."
+              maxLength={20}
             />
-            <Button type="submit" text="save"></Button>
+            <Button
+              type="submit"
+              text="save"
+              bgColor="hover:bg-slate-700 rounded-lg"
+            ></Button>
           </div>
         </Form>
       ) : null}

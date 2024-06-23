@@ -5,6 +5,7 @@ export interface inputProps {
   type: string;
   placeholder?: string;
   value?: string | undefined;
+  maxLength?: number;
 }
 
 export interface formProps {
