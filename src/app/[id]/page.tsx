@@ -1,10 +1,10 @@
 import * as actions from "@/actions";
 import AddTask from "@/components/id-page/AddTask";
 import TaskColumns from "@/components/id-page/TaskColumns";
-import { prisma } from "@/utils/prisma";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { FaLongArrowAltLeft } from "react-icons/fa";
+import { taskProps } from "@/types";
 
 type Props = {
   params: { id: string };
@@ -16,7 +16,7 @@ async function TasksBoardPage({ params }: Props) {
   if (!todoBoard) {
     redirect("/");
   }
-  const tasks = await actions.getAllTasks(params.id);
+  const tasks: taskProps[] = await actions.getAllTasks(params.id);
   return (
     <section className="w-screen py-6 px-4 md:px-16 lg:px-24">
       <Link

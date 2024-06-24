@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Status as PrismaStatus } from "@prisma/client";
 
 export interface inputProps {
   name: string;
@@ -32,13 +33,10 @@ export interface taskProps {
   title?: string | null;
   description: string;
   applyBoard: string;
-  status: Status;
+  status: PrismaStatus;
 }
-export enum Status {
-  PLANNED = "PLANNED",
-  IN_PROGRESS = "IN_PROGRESS",
-  DONE = "DONE",
-}
+
+export { PrismaStatus as Status };
 
 export interface ModalProps {
   isOpen: boolean;
