@@ -2,6 +2,7 @@
 
 import { prisma } from "@/utils/prisma";
 import { revalidatePath } from "next/cache";
+import { Status } from "@/types";
 
 // Actions for todo Boards
 export async function createTodo(formData: FormData) {
@@ -189,7 +190,7 @@ export async function editTask(formData: FormData) {
   }
 }
 
-export async function updateTaskStatus(id: string, newStatus: string) {
+export async function updateTaskStatus(id: string, newStatus: Status) {
   try {
     await prisma.todoItem.update({
       where: {

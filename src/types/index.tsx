@@ -32,7 +32,12 @@ export interface taskProps {
   title?: string | null;
   description: string;
   applyBoard: string;
-  status: string;
+  status: Status;
+}
+export enum Status {
+  PLANNED = "PLANNED",
+  IN_PROGRESS = "IN_PROGRESS",
+  DONE = "DONE",
 }
 
 export interface ModalProps {
