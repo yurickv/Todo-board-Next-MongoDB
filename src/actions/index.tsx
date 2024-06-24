@@ -3,6 +3,7 @@
 import { prisma } from "@/utils/prisma";
 import { revalidatePath } from "next/cache";
 
+// Actions for todo Boards
 export async function createTodo(formData: FormData) {
   const input = formData.get("input") as string;
   if (!input.trim()) {
@@ -16,125 +17,16 @@ export async function createTodo(formData: FormData) {
       },
     });
 
-    revalidatePath("/");
+    revalidatePath(`/`);
+    return {
+      status: "201",
+      message: "Board for task created successfully",
+    };
   } catch (error) {
     console.error("Error creating todo:", error);
     throw new Error("Failed to create todo");
   }
 }
-
-export async function createTask(formData: FormData) {
-  const title = formData.get("inputTitle") as string;
-  const description = formData.get("inputDescription") as string;
-  if (!title.trim() || !description.trim()) {
-    return;
-  }
-  const id = formData.get("inputId") as string;
-
-  try {
-    await prisma.todoItem.create({
-      data: {
-        title: title,
-        description: description,
-        applyBoard: id,
-      },
-    });
-
-    revalidatePath(`/${id}`);
-  } catch (error) {
-    console.error("Error creating task:", error);
-    throw new Error("Failed to create task");
-  }
-}
-
-export async function getAllTasks(id: string) {
-  try {
-    const data = await prisma.todoItem.findMany({
-      where: {
-        applyBoard: id,
-      },
-    });
-    return data;
-  } catch (error) {
-    console.error("Error fetching tasks:", error);
-    throw new Error("Failed to fetch tasks");
-  }
-}
-export async function deleteTask(formData: FormData) {
-  const inputId = formData.get("inputId") as string;
-
-  try {
-    const data = await prisma.todoItem.delete({
-      where: {
-        id: inputId,
-      },
-    });
-    revalidatePath(`/${data.applyBoard}`);
-  } catch (error) {
-    console.error("Error deleting todo:", error);
-    throw new Error("Failed to delete todo");
-  }
-}
-export async function editTask(formData: FormData) {
-  const newTitle = formData.get("newTitle") as string;
-  const newDescription = formData.get("newDescription") as string;
-  const inputId = formData.get("inputId") as string;
-
-  try {
-    const data = await prisma.todoItem.update({
-      where: {
-        id: inputId,
-      },
-      data: {
-        title: newTitle,
-        description: newDescription,
-      },
-    });
-
-    revalidatePath(`/${data.applyBoard}`);
-  } catch (error) {
-    console.error("Error updating todo:", error);
-    throw new Error("Failed to update todo");
-  }
-}
-
-export async function updateTaskStatus(id: string, newStatus: string) {
-  try {
-    await prisma.todoItem.update({
-      where: {
-        id: id,
-      },
-      data: {
-        status: newStatus,
-      },
-    });
-
-    revalidatePath(`/${id}`);
-  } catch (error) {
-    console.error("Failed to update task status", error);
-  }
-}
-// export async function changeStatus(formData: FormData) {
-//   const inputId = formData.get("inputId") as string;
-//   const todo = await prisma.todoBoard.findUnique({
-//     where: {
-//       id: inputId,
-//     },
-//   });
-
-//   const updateStatus = !todo?.isCompleted;
-
-//   await prisma.todo.update({
-//     where: {
-//       id: inputId,
-//     },
-//     data: {
-//       isCompleted: updateStatus,
-//     },
-//   });
-
-//   revalidatePath("/");
-// }
 
 export async function editTodo(formData: FormData) {
   const newTitle = formData.get("newTitle") as string;
@@ -168,6 +60,10 @@ export async function deleteTodo(formData: FormData) {
     });
 
     revalidatePath("/");
+    return {
+      status: "200",
+      message: "Todo board deleted successfully",
+    };
   } catch (error) {
     console.error("Error deleting todo:", error);
     throw new Error("Failed to delete todo");
@@ -206,5 +102,106 @@ export async function getOneTodo(id: string) {
   } catch (error) {
     console.error("Error fetching Todo Board:", error);
     throw new Error("Failed to fetch Todo Board");
+  }
+}
+// Actions for task
+
+export async function createTask(formData: FormData) {
+  const title = formData.get("inputTitle") as string;
+  const description = formData.get("inputDescription") as string;
+  if (!title.trim() || !description.trim()) {
+    return;
+  }
+  const id = formData.get("inputId") as string;
+
+  try {
+    await prisma.todoItem.create({
+      data: {
+        title: title,
+        description: description,
+        applyBoard: id,
+      },
+    });
+    revalidatePath(`/${id}`);
+    return {
+      status: "201",
+      message: "Task created successfully",
+    };
+  } catch (error) {
+    console.error("Error creating task:", error);
+    throw new Error("Failed to create task");
+  }
+}
+
+export async function getAllTasks(id: string) {
+  try {
+    const data = await prisma.todoItem.findMany({
+      where: {
+        applyBoard: id,
+      },
+    });
+    return data;
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+    throw new Error("Failed to fetch tasks");
+  }
+}
+export async function deleteTask(formData: FormData) {
+  const inputId = formData.get("inputId") as string;
+
+  try {
+    const data = await prisma.todoItem.delete({
+      where: {
+        id: inputId,
+      },
+    });
+    revalidatePath(`/${data.applyBoard}`);
+    return {
+      status: "200",
+      message: "Task deleted successfully",
+    };
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+    throw new Error("Failed to delete todo");
+  }
+}
+
+export async function editTask(formData: FormData) {
+  const newTitle = formData.get("newTitle") as string;
+  const newDescription = formData.get("newDescription") as string;
+  const inputId = formData.get("inputId") as string;
+
+  try {
+    const data = await prisma.todoItem.update({
+      where: {
+        id: inputId,
+      },
+      data: {
+        title: newTitle,
+        description: newDescription,
+      },
+    });
+
+    revalidatePath(`/${data.applyBoard}`);
+  } catch (error) {
+    console.error("Error updating todo:", error);
+    throw new Error("Failed to update todo");
+  }
+}
+
+export async function updateTaskStatus(id: string, newStatus: string) {
+  try {
+    await prisma.todoItem.update({
+      where: {
+        id: id,
+      },
+      data: {
+        status: newStatus,
+      },
+    });
+
+    revalidatePath(`/${id}`);
+  } catch (error) {
+    console.error("Failed to update task status", error);
   }
 }

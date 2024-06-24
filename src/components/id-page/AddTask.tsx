@@ -1,13 +1,24 @@
+"use client";
 import * as actions from "@/actions";
 import Button from "../button/Button";
 import Form from "../form/Form";
 import Input from "../input/Input";
 import { todoProps } from "@/types";
+import Notiflix from "notiflix";
 
 const AddTask = ({ todo }: { todo: todoProps }) => {
+  const handleSubmit = async (formData: FormData) => {
+    const response = await actions.createTask(formData);
+    if (response?.status === "201") {
+      Notiflix.Notify.success("New task added succesfully");
+    } else {
+      Notiflix.Notify.failure("somethihg went wrong");
+    }
+  };
+
   return (
     <div>
-      <Form action={actions.createTask}>
+      <Form action={handleSubmit}>
         <div className="flex gap-4 items-center">
           <Input
             name="inputTitle"
