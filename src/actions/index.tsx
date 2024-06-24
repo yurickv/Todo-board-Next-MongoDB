@@ -50,10 +50,44 @@ export async function editTodo(formData: FormData) {
   }
 }
 
+// export async function deleteTodo(formData: FormData) {
+//   const inputId = formData.get("inputId") as string;
+
+//   try {
+//     const tasksOwn = await getAllTasks(inputId);
+
+//     await prisma.todoBoard.delete({
+//       where: {
+//         id: inputId,
+//       },
+//     });
+
+//     revalidatePath("/");
+//     return {
+//       status: "200",
+//       message: "Todo board deleted successfully",
+//     };
+//   } catch (error) {
+//     console.error("Error deleting todo:", error);
+//     throw new Error("Failed to delete todo");
+//   }
+// }
 export async function deleteTodo(formData: FormData) {
   const inputId = formData.get("inputId") as string;
 
   try {
+    const tasksOwn = await getAllTasks(inputId);
+
+    const deleteTasksPromises = tasksOwn.map((task) =>
+      prisma.todoItem.delete({
+        where: {
+          id: task.id,
+        },
+      })
+    );
+
+    await Promise.all(deleteTasksPromises);
+
     await prisma.todoBoard.delete({
       where: {
         id: inputId,
@@ -63,7 +97,7 @@ export async function deleteTodo(formData: FormData) {
     revalidatePath("/");
     return {
       status: "200",
-      message: "Todo board deleted successfully",
+      message: "Todo board and its tasks deleted successfully",
     };
   } catch (error) {
     console.error("Error deleting todo:", error);
